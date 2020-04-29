@@ -1,10 +1,114 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Criaglist Clone</title>
-  </head>
-  <body>
-    <h2>Welcome to the criaglist clone project</h2>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <title>Criaglist Clone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="{% static "css/style.css" %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+</head>
+
+<body>
+  <nav>
+      <div class="container nav-wrapper">
+          <a href="/" class="brand-logo">Modern Criaglist</a>
+          <ul id="nav-mobile" class="right">
+              <li><a href="/">Home</a></li>
+          </ul>
+      </div>
+  </nav>
+
+  <div class="container">
+    <h1 style="text-align: center">What do you have in mind?</h1>
+    <div class="row">
+        <div class="col s4">
+            <!--First Icon goes here -->
+            <div class="center">
+                <i class="medium material-icons" style="color: #EE6E73">devices</i>
+                <p>Fast craigslist web scraper</p>
+                <p class="light center">Scrape away right here with a beautiful GUI.</p>
+            </div>
+        </div>
+
+        <div class="col s4">
+            <!--Second Icon goes here -->
+            <div class="center">
+                <i class="medium material-icons" style="color: orange">find_replace</i>
+                <p>Filter your searches</p>
+                <p class="light center">Built in functionality to filter based on pricing and city with autocomplete features.</p>
+            </div>
+        </div>
+
+        <div class="col s4">
+            <!-- Third Icon goes here -->
+            <div class="center">
+                <i class="medium material-icons" style="color: blue">airplay</i>
+                <p>Modern front-end to Craigslist</p>
+                <p class="light center">
+                  <a href="https://github.com/mohdnadeem94">Developed by Mohamed Nadeem Ameerdeen</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <form action="{% url 'new_search' %}" method="post" style="text-align: center">
+        {% csrf_token %}
+        <div class="input-field col s12">
+          <input  name="search" type="text" id="autocomplete-input" class="autocomplete">
+          <label for="autocomplete-input">Search for the items here</label>
+        </div>
+        <!-- <input type="text" name="search" placeholder="Search for the items here"> -->
+        <div class="row">
+          <div class="col s4">
+            <select value ="rose" name="rose">
+              <option value="" disabled selected >Choose your City </option>
+              <option value="atlanta">Atlanta</option>
+              <option value="austin">Austin</option>
+              <option value="boston">Boston</option>
+              <option value="chicago">Chicago</option>
+              <option value="dallas">Dallas</option>
+            </select>
+          </div>
+          <div class="col s4">
+            <input type="text" name="min_price" placeholder="Enter the minimum value here">
+          </div>
+          <div class="col s4">
+            <input type="text" name="max_price" placeholder="Enter the maximum value here">
+          </div>
+        </div>
+        <button class="btn waves-effect waves-light" type="submit" name="action" >Submit
+            <i class="material-icons right">send</i>
+        </button>
+    </form>
+
+    {% block content %}
+
+    {% endblock %}
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> -->
+<script type="text/javascript">
+  $(document).ready(function(){
+     $('.modal').modal();
+     $('.dropdown-trigger').dropdown();
+     $('select').formSelect();
+     $('input.autocomplete').autocomplete({
+      data: {
+        "Apple": null,
+        "Microsoft": null,
+        "Car": null,
+        "Carpet": null,
+        "Car Wheels": null,
+        "LCD TV": null,
+        "LED TV": null,
+        "Google": 'https://placehold.it/250x250'
+      },
+    });
+  });
+
+</script>
+</body>
 </html>
