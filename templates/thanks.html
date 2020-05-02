@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<h3 style="text-align: center" ><strong>Thanks for Logging In !</strong></h3>
 <div class="container">
-  <h1 style="text-align: center">What do you have in mind?</h1>
+  <h2 style="text-align: center">What do you have in mind?</h2>
   <div class="row">
       <div class="col s4">
           <!--First Icon goes here -->
@@ -64,22 +65,4 @@
       </button>
   </form>
 
-<h4 style="text-align: center"> Results for {{search_item | title}} in {{city | title}}</h4>
-<div class="row">
-  {% for post in final_postings|slice:":30"  %}
-    <div class="col s4">
-      <div class="card small">
-        <div class="card-image">
-            <a href="{{ post.1 }}"><img src="{{ post.3 }}" alt=""></a>
-        </div>
-        <div class="card-content">
-            <p>{{ post.0 }}</p>
-        </div>
-        <div class="card-action">
-            <a href="{{ post.1 }}">View listing: Price {{ post.2 }}</a>
-        </div>
-      </div>
-    </div>
-  {% endfor %}
-</div>
 {% endblock content %}

@@ -4,13 +4,15 @@ from . import models
 from bs4 import BeautifulSoup
 import requests
 from requests.compat import quote_plus
+#for visualizations
+import pandas as pd
+from plotly.offline import plot
+import plotly.graph_objs as go
+
 # Create your views here.
 BASE_CRAIGSLIST_URL = 'https://{a}.craigslist.org/search/?query={b}'
 BASE_IMAGE_URL = 'https://images.craigslist.org/{}_300x300.jpg'
 
-
-def Home(request):
-    return render(request,'base.html')
 
 def New_Search(request):
 
@@ -18,12 +20,11 @@ def New_Search(request):
 
     if request.method == "POST":
         city = request.POST.get('rose')
-    print(city)
 
     min_price = request.POST.get('min_price')
     max_price = request.POST.get('max_price')
 
-    models.Search.objects.create(search=search)
+    models.Search.objects.create(search=search,minimum_price=min_price,maximum_price=max_price,city_name=city)
 
     final_url = BASE_CRAIGSLIST_URL.format(a =city,b=quote_plus(search))
     response = requests.get(final_url)
@@ -64,7 +65,36 @@ def New_Search(request):
                 final_postings.append((post_title, post_url, post_price,post_image_url))
         else:
             final_postings.append((post_title, post_url, post_price,post_image_url))
-    print(search)
-    print(min_price)
-    print(max_price)
+
     return render(request,'my_app/new_search.html',context = {'search_item':search,'city':city,'final_postings':final_postings})
+
+def Analytics_Page(request):
+    search_db = models.Search.objects.values()
+    search_df = pd.DataFrame(search_db)
+    search_key = pd.DataFrame(search_df.groupby(['search'])['id'].count())
+
+    search_key.reset_index(inplace = True)
+    search_key.sort_values(by='id', ascending=False,inplace = True)
+    search_key = search_key.head(10)
+
+    plot_div = go.Bar(x=search_key['search'], y=search_key['id'],
+                        opacity=0.8, marker_color='rgb(217, 78, 99)')
+    data=go.Data([plot_div])
+    layout=go.Layout(title=" Most Searched Keywords", xaxis={'title':'Keywords'}, yaxis={'title':'Count'})
+    figure=go.Figure(data=data,layout=layout)
+    bar_plot = plot(figure, auto_open=False, output_type='div')
+
+
+    citywise = pd.DataFrame(search_df.groupby(['city_name'])['id'].count())
+    citywise.reset_index(inplace = True)
+    citywise.sort_values(by='id', ascending=False,inplace = True)
+
+    fig = go.Pie(labels=citywise['city_name'], values=citywise['id'], textinfo='label+percent',
+                                 insidetextorientation='radial'
+                                )
+    dat=go.Data([fig])
+    lay=go.Layout(title=" City Wise Searches")
+    figue=go.Figure(data=dat,layout=lay)
+    pie_plot = plot(figue, auto_open=False, output_type='div')
+
+    return render(request,'my_app/analytics.html',context={'search_db':search_db,'bar_plot': bar_plot,'pie_plot':pie_plot})

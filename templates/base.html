@@ -17,74 +17,20 @@
 <body>
   <nav>
       <div class="container nav-wrapper">
-          <a href="/" class="brand-logo">Modern Criaglist</a>
+          <a href="/" class="brand-logo"> <span><strong>MC</strong></span> Modern Criaglist</a>
           <ul id="nav-mobile" class="right">
+            {% if user.is_authenticated %}
               <li><a href="/">Home</a></li>
+              <li><a href="{% url 'my_app:analytics' %}">Dashboard</a></li>
+              <li><a href="{% url 'accounts:logout' %}">Log Out</a></li>
+            {% else %}
+              <li><a href="/">Home</a></li>
+              <li><a href="{% url 'accounts:login' %}">Log In</a></li>
+              <li><a href="{% url 'accounts:signup' %}">Sign Up</a></li>
+            {% endif %}
           </ul>
       </div>
   </nav>
-
-  <div class="container">
-    <h1 style="text-align: center">What do you have in mind?</h1>
-    <div class="row">
-        <div class="col s4">
-            <!--First Icon goes here -->
-            <div class="center">
-                <i class="medium material-icons" style="color: #EE6E73">devices</i>
-                <p>Fast craigslist web scraper</p>
-                <p class="light center">Scrape away right here with a beautiful GUI.</p>
-            </div>
-        </div>
-
-        <div class="col s4">
-            <!--Second Icon goes here -->
-            <div class="center">
-                <i class="medium material-icons" style="color: orange">find_replace</i>
-                <p>Filter your searches</p>
-                <p class="light center">Built in functionality to filter based on pricing and city with autocomplete features.</p>
-            </div>
-        </div>
-
-        <div class="col s4">
-            <!-- Third Icon goes here -->
-            <div class="center">
-                <i class="medium material-icons" style="color: blue">airplay</i>
-                <p>Modern front-end to Craigslist</p>
-                <p class="light center">
-                  <a href="https://github.com/mohdnadeem94">Developed by Mohamed Nadeem Ameerdeen</a>
-                </p>
-            </div>
-        </div>
-    </div>
-    <form action="{% url 'new_search' %}" method="post" style="text-align: center">
-        {% csrf_token %}
-        <div class="input-field col s12">
-          <input  name="search" type="text" id="autocomplete-input" class="autocomplete">
-          <label for="autocomplete-input">Search for the items here</label>
-        </div>
-        <!-- <input type="text" name="search" placeholder="Search for the items here"> -->
-        <div class="row">
-          <div class="col s4">
-            <select value ="rose" name="rose">
-              <option value="" disabled selected >Choose your City </option>
-              <option value="atlanta">Atlanta</option>
-              <option value="austin">Austin</option>
-              <option value="boston">Boston</option>
-              <option value="chicago">Chicago</option>
-              <option value="dallas">Dallas</option>
-            </select>
-          </div>
-          <div class="col s4">
-            <input type="text" name="min_price" placeholder="Enter the minimum value here">
-          </div>
-          <div class="col s4">
-            <input type="text" name="max_price" placeholder="Enter the maximum value here">
-          </div>
-        </div>
-        <button class="btn waves-effect waves-light" type="submit" name="action" >Submit
-            <i class="material-icons right">send</i>
-        </button>
-    </form>
 
     {% block content %}
 
@@ -102,10 +48,18 @@
         "Car": null,
         "Carpet": null,
         "Car Wheels": null,
+        "Car Steering": null,
         "LCD TV": null,
         "LED TV": null,
-        "Google": 'https://placehold.it/250x250'
+        "Cheap Rooms":null,
+        "Cheap Rooms near":null,
+        "Table":null,
+        "Chair":null,
+        "Google": 'https://placehold.it/250x250',
+
       },
+      minLength:4,
+      limit:5,
     });
   });
 
