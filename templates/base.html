@@ -18,7 +18,7 @@
   <nav>
       <div class="container nav-wrapper">
           <a href="/" class="brand-logo"> <span><strong>MC</strong></span> Modern Criaglist</a>
-          <ul id="nav-mobile" class="right">
+          <ul class="right">
             {% if user.is_authenticated %}
               <li><a href="/">Home</a></li>
               <li><a href="{% url 'my_app:analytics' %}">Dashboard</a></li>
